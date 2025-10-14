@@ -1,0 +1,28 @@
+body {
+  background-color: #e4d0f2;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 20px;
+  
+}
+
+h1 {
+  color: #424242;           
+  font-size: 28px;
+}
+
+svg {
+  fill: #e4d0f2;
+  margin-top: 20px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.axis-label {
+  fill: #424242;               
+  font-size: 14px;
+  font-weight: bold;
+}
+
