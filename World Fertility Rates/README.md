@@ -3,5 +3,5 @@
 
 An interactive line chart where you can select the lines (countries) you want to highlight, with a context area underneath, which allows brushing a certain period of years that makes the line chart focus on that period.
 
-run on local server: python -m http.server 8000
+run on local server: python -m http.server 8000 
 view: http:// localhost:8000/
