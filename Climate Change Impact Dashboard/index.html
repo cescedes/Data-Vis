@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Change Impact Dashboard</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <h1>Climate Change Impact Dashboard</h1>
+            <button id="reset-btn" class="header-reset" onclick="resetSelection()">Reset to All Countries</button>
+        </div>
+    </header>
+
+    <div class="layout">
+            <aside id="sidebar" class="sidebar">
+                <div id="summary-panel" class="summary-panel"></div>
+            </aside>
+
+      <main class="dashboard">
+        <div class="view-container" id="view-a">
+            <div class="view-header">
+                <h2>Countries by Climate Risk (2022)</h2>
+                <p class="description">INFORM 2022 risk scores ranked high to low; click any bar to add/remove a country from the selection.</p>
+            </div>
+            <div class="chart-wrapper scrollable">
+                <svg width="600" height="550"></svg>
+            </div>
+        </div>
+
+        <div class="view-container" id="view-b">
+            <div class="view-header">
+                <h2>Global Climate Stress Map</h2>
+                <p class="description">Choropleth by INFORM risk; click to toggle countries, use zoom/pan to inspect regions.</p>
+            </div>
+            <div class="chart-wrapper">
+                <svg width="700" height="320"></svg>
+            </div>
+        </div>
+
+        <div class="view-container" id="view-c">
+            <div class="view-header">
+                <h2>Average Disaster Impact (2015-2024)</h2>
+                <p class="description">Avg people affected per disaster by year; dots show per-year averages, hover for exact values.</p>
+            </div>
+            <div class="chart-wrapper scrollable">
+                <svg width="600" height="550"></svg>
+            </div>
+        </div>
+
+        <div class="view-container" id="view-d">
+            <div class="view-header">
+                <h2>Environmental Spending (2015-2022) vs. Risk Score</h2>
+                <p class="description">Risk vs avg environment spend (% of GDP); red dots = priority gaps (risk ≥ P75 and spend ≤ P25).</p>
+            </div>
+            <div class="chart-wrapper">
+                <svg width="680" height="320"></svg>
+            </div>
+        </div>
+            </main>
+        </div>
+
+    <footer>
+        <p>Data sources: INFORM Risk Index, EM-DAT Disaster Database, IMF Government Finance Statistics, World Bank Land Cover Data</p>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="views/riskRanking.js"></script>
+    <script src="views/choropleth.js"></script>
+    <script src="views/disasterTrends.js"></script>
+    <script src="views/expenditureRisk.js"></script>
+</body>
+</html>

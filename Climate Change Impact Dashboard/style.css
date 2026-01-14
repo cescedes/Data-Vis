@@ -1,0 +1,553 @@
+#view-d .chart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* match map view to align frame heights */
+}
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 0.3rem 0.7rem 0.2rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.header-reset {
+  background: white;
+  color: #1e3c72;
+  border: 1px solid white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.header-reset:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+header h1 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.05rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 300;
+  margin: 0.05rem 0 0.15rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.45rem;
+  justify-content: center;
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.controls.compact {
+  margin-top: 0;
+  justify-content: flex-end;
+}
+
+.controls button {
+  background: white;
+  color: #1e3c72;
+  border: 1px solid white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.controls button:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.controls button:active {
+  transform: translateY(0);
+}
+
+/* Summary Panel */
+.summary-panel {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.summary-help {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  margin-top: 0.2rem;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+  min-width: 105px;
+  transition: all 0.15s ease;
+}
+
+.summary-card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+
+.summary-card .label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  margin-bottom: 0.15rem;
+  color: white;
+}
+
+.summary-card .value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.summary-card.priority {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.18);
+}
+
+.summary-card.disaster {
+  border-color: #ffd93d;
+  background: rgba(255, 217, 61, 0.18);
+}
+
+.summary-card.gap {
+  border-color: #6bcf7f;
+  background: rgba(107, 207, 127, 0.18);
+}
+
+.summary-card.critical {
+  border-color: #ff3838;
+  background: rgba(255, 56, 56, 0.25);
+  font-weight: 600;
+}
+
+/* Main Dashboard Grid */
+.layout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0.5rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  padding: 0 1.2rem 0 0;
+  overflow: visible;
+}
+
+.sidebar {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border-radius: 0;
+  box-shadow: none;
+    padding: 0.2rem 0 0.4rem 0; /* no horizontal padding to keep flush-left */
+  position: sticky;
+  top: 60px; /* Account for header height */
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.sidebar-reset {
+  width: 100%;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.8);
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-reset:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.sidebar .summary-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sidebar .summary-card {
+  width: 100%;
+  color: white;
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar .summary-card .label,
+.sidebar .summary-card .value {
+  color: white;
+}
+
+.dashboard {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "view-b view-d"
+    "view-a view-c";
+  grid-auto-rows: minmax(300px, auto);
+  gap: 0.4rem;
+}
+
+/* Explicit grid areas to control placement */
+#view-a { grid-area: view-a; }
+#view-b { grid-area: view-b; }
+#view-c { grid-area: view-c; }
+#view-d { grid-area: view-d; }
+
+/* Responsive: Stack on narrow screens */
+@media (max-width: 1100px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "view-b"
+      "view-d"
+      "view-a"
+      "view-c";
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .view-container {
+    border-radius: 8px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .controls button {
+    width: 100%;
+  }
+
+  .summary-panel {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: stretch;
+  }
+
+  .summary-card {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* View Containers */
+.view-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ensure Views B and D stretch to equal row height */
+#view-b,
+#view-d {
+  align-self: stretch;
+}
+
+.view-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* View Headers */
+.view-header {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 0.5rem 0.8rem;
+  border-bottom: 3px solid #667eea;
+}
+
+.view-header h2 {
+  font-size: 1.1rem;
+  color: #1e3c72;
+  margin-bottom: 0.15rem;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 0.8rem;
+  color: #5a6c7d;
+  font-style: italic;
+}
+
+/* Chart Wrapper */
+.chart-wrapper {
+  padding: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  height: auto;
+  min-height: 200px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Remove padding for map view to maximize usable space */
+#view-b .chart-wrapper {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  height: 100%; /* fill the view container height */
+  position: relative; /* anchor zoom controls */
+}
+
+/* Stretch map SVG to full width of its frame */
+#view-b .chart-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Map zoom controls */
+.map-zoom-controls {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+}
+
+.map-zoom-controls button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #ccd5e0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e3c72;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.map-zoom-controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background: #f7f9fc;
+}
+
+.map-zoom-controls button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* Make scatterplot frame exactly match map frame */
+#view-d .chart-wrapper {
+  height: 100%; /* fill the view container height */
+  padding: 0; /* remove default padding */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#view-d .chart-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-wrapper.scrollable {
+  height: 570px; /* fixed height to enable scrolling */
+  min-height: 570px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  width: 100%;
+}
+
+.chart-wrapper.scrollable svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100% !important;
+}
+
+.chart-wrapper svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Chart Elements */
+.bar {
+  cursor: pointer;
+  transition: opacity 0.2s ease, fill 0.2s ease;
+}
+
+.bar:hover {
+  opacity: 0.7;
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.country {
+  cursor: pointer;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+}
+
+.country:hover {
+  opacity: 0.85;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.line {
+  cursor: pointer;
+  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+}
+
+.line:hover {
+  opacity: 1;
+  stroke-width: 3 !important;
+}
+
+.point {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  stroke: white;
+  stroke-width: 1.5;
+}
+
+.point:hover {
+  opacity: 1;
+  r: 8;
+  stroke-width: 2;
+}
+
+/* Axis Styling */
+.x-axis, .y-axis {
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.x-axis path,
+.y-axis path,
+.x-axis line,
+.y-axis line {
+  stroke: #666;
+}
+
+.x-axis text,
+.y-axis text {
+  fill: #333;
+}
+
+.x-label, .y-label {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #1e3c72;
+}
+
+/* Footer */
+footer {
+  background: #1e3c72;
+  color: white;
+  text-align: center;
+  padding: 0.6rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+  
+  .view-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .chart-wrapper {
+    padding: 1rem;
+  }
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Tooltip Enhancement */
+title {
+  font-size: 14px;
+}
